@@ -1,5 +1,7 @@
 ﻿using Data;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SkulSeedMenu.UI
 {
@@ -24,6 +26,10 @@ namespace SkulSeedMenu.UI
         private Rect seedLabelRect;
         private Rect seedTextfieldRect;
         private Rect randomizeButtonRect;
+
+        private GUIStyle labelStyle;
+        private GUIStyle textFieldStyle;
+        private GUIStyle buttonStyle;
 
         public void OnGUI()
         {
@@ -50,6 +56,21 @@ namespace SkulSeedMenu.UI
         {
             wUnit = Screen.width / 50;
             hUnit = Screen.height / 50;
+
+            labelStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = (int)hUnit
+            };
+
+            textFieldStyle = new GUIStyle(GUI.skin.textField)
+            {
+                fontSize = (int)hUnit
+            };
+
+            buttonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = (int)hUnit
+            };
         }
 
         private void Resize()
@@ -57,7 +78,7 @@ namespace SkulSeedMenu.UI
             menuWidth = (int)(wUnit * 10);
             menuHeight = (int)(hUnit * 7);
 
-            windowRect = new Rect(Screen.width - menuWidth - wUnit * 2, hUnit, menuWidth, menuHeight);
+            windowRect = new Rect(Screen.width - menuWidth - wUnit, hUnit, menuWidth, menuHeight);
             float row = 0;
 
             dragWindowRect = new Rect(0, 0, menuWidth, hUnit);
@@ -74,15 +95,29 @@ namespace SkulSeedMenu.UI
         {
             GUI.DragWindow(dragWindowRect);
 
-            GUI.Label(seedLabelRect, "Seed:");
-            SetSeedFromString(GUI.TextField(seedTextfieldRect, GameData.Save.instance._randomSeed._value.ToString()));
+            GUI.Label(seedLabelRect, "Seed:", labelStyle);
+            SetSeedFromString(GUI.TextField(seedTextfieldRect, GameData.Save.instance._randomSeed._value.ToString(), textFieldStyle));
             
-            if (GUI.Button(randomizeButtonRect, "Randomize"))
+            if (GUI.Button(randomizeButtonRect, "Randomize", buttonStyle))
             {
                 GameData.Save.instance._randomSeed._value = Random.Range(int.MinValue, int.MaxValue);
             }
         }
 
-        private void SetSeedFromString(string seed) => int.TryParse(seed, out GameData.Save.instance._randomSeed._value);
+        private void SetSeedFromString(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                GameData.Save.instance._randomSeed._value = 0;
+                return;
+            }
+
+            bool success = int.TryParse(input, out int parsed);
+
+            if (success)
+            {
+                GameData.Save.instance._randomSeed._value = parsed;
+            }
+        }
     }
 }
