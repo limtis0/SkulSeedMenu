@@ -31,6 +31,14 @@ namespace SkulSeedMenu.UI
         private GUIStyle textFieldStyle;
         private GUIStyle buttonStyle;
 
+        public void Update()
+        {
+            if ((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && Input.GetKeyUp(KeyCode.S))
+            {
+                showMenu = !showMenu;
+            }
+        }
+
         public void OnGUI()
         {
             if (!showMenu)
@@ -49,7 +57,7 @@ namespace SkulSeedMenu.UI
                 Resize();
             }
 
-            windowRect = GUI.Window(657461330, windowRect, Fill, "Seed menu");
+            windowRect = GUI.Window(657461330, windowRect, Fill, "Seed menu - Alt+S to toggle");
         }
 
         private void CalculateSizing()
