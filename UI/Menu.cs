@@ -117,25 +117,21 @@ namespace SkulSeedMenu.UI
 
         private void SetSeedFromString(string input)
         {
-            try
+            if (input == previousSeed || (string.IsNullOrEmpty(input) && previousSeed == "0"))
             {
-                if (input == previousSeed || (string.IsNullOrEmpty(input) && previousSeed == "0"))
-                {
-                    return;
-                }
-
-                previousSeed = input;
-
-                bool success = int.TryParse(input, out int parsed);
-
-                if (success)
-                {
-                    GameData.Save.instance._randomSeed._value = parsed;
-
-                    Singleton<Service>.Instance.levelManager.currentChapter.currentStage.Reset();
-                }
+                return;
             }
-            catch { }  // Prevent NullReferenceException when currentStage is not loaded yet
+
+            previousSeed = input;
+
+            bool success = int.TryParse(input, out int parsed);
+
+            if (success)
+            {
+                GameData.Save.instance._randomSeed._value = parsed;
+
+                Singleton<Service>.Instance.levelManager.currentChapter?.currentStage?.Reset();
+            }
         }
     }
 }
