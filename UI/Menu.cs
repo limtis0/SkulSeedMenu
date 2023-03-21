@@ -1,5 +1,6 @@
 ﻿using Data;
-using System;
+using Services;
+using Singletons;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,8 @@ namespace SkulSeedMenu.UI
 
         private int menuWidth;
         private int menuHeight;
+
+        private string previousSeed = string.Empty;
 
         // Menu elements
         private Rect windowRect;
@@ -114,18 +117,25 @@ namespace SkulSeedMenu.UI
 
         private void SetSeedFromString(string input)
         {
-            if (string.IsNullOrEmpty(input))
+            try
             {
-                GameData.Save.instance._randomSeed._value = 0;
-                return;
-            }
+                if (input == previousSeed || (string.IsNullOrEmpty(input) && previousSeed == "0"))
+                {
+                    return;
+                }
 
-            bool success = int.TryParse(input, out int parsed);
+                previousSeed = input;
 
-            if (success)
-            {
-                GameData.Save.instance._randomSeed._value = parsed;
+                bool success = int.TryParse(input, out int parsed);
+
+                if (success)
+                {
+                    GameData.Save.instance._randomSeed._value = parsed;
+
+                    Singleton<Service>.Instance.levelManager.currentChapter.currentStage.Reset();
+                }
             }
+            catch { }  // Prevent NullReferenceException when currentStage is not loaded yet
         }
     }
 }
