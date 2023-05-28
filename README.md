@@ -2,10 +2,14 @@
 Simple mod for "Skul: The Hero Slayer" that provides you with ability to change the world-generation seed value
 <img width="802" alt="Preview" src="https://user-images.githubusercontent.com/45824078/226492985-8cf064a4-6a44-4fa3-8625-79fdbbffca27.png">
 
-### Setup premise
+## Setup premise
 `$(SkulFolder)` is a directory where the game is located on your PC
 
-### Setup
+## Setup
+### Automatic setup
+Visit [Thunderstore page of this mod](https://thunderstore.io/c/skul-the-hero-slayer/p/Limtis/SeedMenu/) and install it with the Mod Manager!
+
+### Manual setup
 1. Extract into `$(SkulFolder)/2020.3.34` (You will need to create a folder)
     - [unstripped Unity 2020.3.34 files](https://unity.bepinex.dev/libraries/2020.3.34.zip)
     - [unstripped CoreLibs 2020.3.34 files](https://unity.bepinex.dev/corlibs/2020.3.34.zip)
@@ -15,7 +19,7 @@ Simple mod for "Skul: The Hero Slayer" that provides you with ability to change 
     - Set `dllSearchPathOverride=` to `dllSearchPathOverride=2020.3.34`
 4. Download (or [build it yourself](#build-it-yourself)) the mod from ["Releases" page](https://github.com/limtis0/SkulSeedMenu/releases) and place it to `$(SkulFolder)/BepInEx/plugins`
 
-### Build it yourself
+## Build it yourself
 Assuming you have .NET Framework 4.7.2 and Visual Studio installed
 1. Clone the project into Visual Studio
 2. NuGet packages should install automatically, if they didn't - do so
